@@ -1,6 +1,7 @@
 library farts;
 
-import 'package:flutter/material.dart';
+import 'package:farts/painters/ChartPainter.dart';
+import 'package:flutter/widgets.dart';
 
 /// A Flutter chart
 class Fart extends StatelessWidget {
@@ -8,6 +9,9 @@ class Fart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("test");
+    return CustomPaint(
+      size: Size(200, 200),
+      painter: ChartPainter(),
+    );
   }
 }
