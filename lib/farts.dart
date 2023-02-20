@@ -1,7 +1,13 @@
 library farts;
 
+import 'package:flutter/material.dart';
+
 /// A Flutter chart
-class Fart {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+class Fart extends StatelessWidget {
+  const Fart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("test");
+  }
 }
