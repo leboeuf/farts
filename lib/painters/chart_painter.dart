@@ -11,8 +11,20 @@ class ChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.clipRect(Rect.fromLTRB(0, 0, size.width, size.height));
-    canvas.drawColor(_chartStyle.colors.backgroundColor[0], BlendMode.src);
+    // Clip drawing area to chart bounds.
+    var chartArea = Rect.fromLTRB(0, 0, size.width, size.height);
+    canvas.clipRect(chartArea);
+
+    // Draw background
+    var bgGradient = LinearGradient(
+      begin: Alignment.bottomCenter,
+      end: Alignment.topCenter,
+      colors: _chartStyle.colors.backgroundColor,
+    );
+    canvas.drawRect(
+        chartArea, Paint()..shader = bgGradient.createShader(chartArea));
+
+    // Draw series
     canvas.drawLine(
         const Offset(20, 20),
         const Offset(40, 40),
