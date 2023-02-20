@@ -5,12 +5,14 @@ import 'package:flutter/widgets.dart';
 
 /// A Flutter chart
 class Fart extends StatelessWidget {
-  const Fart({super.key});
+  final Size _size;
+
+  Fart(this._size, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(200, 200),
+      size: _size,
       painter: ChartPainter(),
     );
   }

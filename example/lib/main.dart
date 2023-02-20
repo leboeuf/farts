@@ -35,10 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          children: <Widget>[
-            Fart(),
-          ],
+        child: LayoutBuilder(
+          builder: (context, constraints) => Fart(constraints.biggest),
         ),
       ),
     );
