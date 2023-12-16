@@ -1,3 +1,5 @@
+import 'package:farts/farts.dart';
+
 import '../chart_style.dart' show ChartStyle;
 import 'package:flutter/material.dart';
 
@@ -7,7 +9,7 @@ class ChartPainter extends CustomPainter {
   final ChartStyle _chartStyle;
 
   /// Creates a [ChartPainter] that draws a chart using the given [ChartStyle].
-  ChartPainter(this._chartStyle);
+  ChartPainter(this._chartStyle, List<Series>? series);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -27,7 +29,7 @@ class ChartPainter extends CustomPainter {
     // Draw series
     canvas.drawLine(
         const Offset(20, 20),
-        const Offset(40, 40),
+        const Offset(90, 90),
         Paint()
           ..color = _chartStyle.colors.lineColor
           ..strokeWidth = 4);
