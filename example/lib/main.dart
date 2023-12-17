@@ -1,4 +1,4 @@
-import 'package:farts/farts.dart';
+import 'package:example/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -34,11 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: LayoutBuilder(
-          builder: (context, constraints) => Fart(constraints.biggest),
-        ),
-      ),
+      body: const HomePage(),
     );
   }
 }
