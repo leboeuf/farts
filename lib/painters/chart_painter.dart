@@ -1,6 +1,7 @@
-import 'package:farts/farts.dart';
+import 'package:farts/models/chart_data.dart';
+import 'package:farts/models/tick_list.dart';
 
-import '../chart_style.dart' show ChartStyle;
+import '../models/chart_style.dart' show ChartStyle;
 import 'package:flutter/material.dart';
 
 /// A [CustomPainter] implementation to draw financial charts.
@@ -17,28 +18,44 @@ class ChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Clip drawing area to chart bounds.
-    var chartArea = Rect.fromLTRB(0, 0, size.width, size.height);
+    final chartArea = Rect.fromLTRB(0, 0, size.width, size.height);
     canvas.clipRect(chartArea);
 
-    // Draw background
-    var bgGradient = LinearGradient(
+    _drawBackground(canvas, chartArea);
+
+    _drawData(canvas, chartArea, _chartData);
+
+    _drawDebugText(size, canvas);
+  }
+
+  void _drawData(Canvas canvas, Rect chartArea, ChartData chartData) {
+    for (int i = 0; i < _chartData.series.ticks.length; ++i) {
+      var plotAreaTop = 10;
+      var plotAreaBottom = 400;
+      var tick = _chartData.series.ticks.elementAt(i);
+      var yPosHigh = _worldToScreen(
+          _chartData.series, tick.high, plotAreaTop, plotAreaBottom);
+      var yPosLow = _worldToScreen(
+          _chartData.series, tick.low, plotAreaTop, plotAreaBottom);
+
+      var x = (i * 6).toDouble();
+      canvas.drawLine(
+          Offset(x, yPosHigh.toDouble()),
+          Offset(x, yPosLow.toDouble()),
+          Paint()
+            ..color = _chartStyle.colors.lineColor
+            ..strokeWidth = 4);
+    }
+  }
+
+  void _drawBackground(Canvas canvas, Rect chartArea) {
+    final bgGradient = LinearGradient(
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
       colors: _chartStyle.colors.backgroundColor,
     );
     canvas.drawRect(
         chartArea, Paint()..shader = bgGradient.createShader(chartArea));
-
-    // Draw series
-    canvas.drawLine(
-        const Offset(20, 20),
-        const Offset(90, 90),
-        Paint()
-          ..color = _chartStyle.colors.lineColor
-          ..strokeWidth = 4);
-
-    // Draw debug text
-    _drawDebugText(size, canvas);
   }
 
   void _drawDebugText(Size size, Canvas canvas) {
@@ -72,5 +89,16 @@ class ChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
+  }
+
+  /// Translates a [price] into a vertical screen coordinate.
+  /// [yMin] is the top of the drawing area and [yMax] is the bottom.
+  int _worldToScreen(TickList tickData, double price, int yMin, int yMax) {
+    final range = tickData.max - tickData.min;
+
+    final yProp = 1 - ((price - tickData.min) / range);
+    final yOffset = yProp * (yMax - yMin);
+
+    return yMin + yOffset.toInt();
   }
 }

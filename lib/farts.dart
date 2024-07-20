@@ -1,9 +1,10 @@
 library farts;
 
+import 'package:farts/models/chart_data.dart';
 import 'package:farts/painters/chart_painter.dart';
 import 'package:flutter/widgets.dart';
 
-import 'chart_style.dart';
+import 'models/chart_style.dart';
 
 /// A financial chart.
 class Fart extends StatelessWidget {
@@ -29,15 +30,4 @@ class Fart extends StatelessWidget {
       painter: ChartPainter(_chartStyle, _chartData),
     );
   }
-}
-
-class ChartData {
-  late List<Series> series;
-}
-
-class Series {
-  late double open;
-  late double high;
-  late double low;
-  late double close;
 }
