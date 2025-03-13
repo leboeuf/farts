@@ -19,8 +19,8 @@ class HomePageItem extends StatelessWidget {
       child: TextButton(
           style: ButtonStyle(
             padding:
-                MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

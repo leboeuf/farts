@@ -29,16 +29,18 @@ class ChartPainter extends CustomPainter {
   }
 
   void _drawData(Canvas canvas, Rect chartArea, ChartData chartData) {
+    final spaceBetweenDivX = chartArea.width / _chartData.series.ticks.length;
+
     for (int i = 0; i < _chartData.series.ticks.length; ++i) {
-      var plotAreaTop = 10;
-      var plotAreaBottom = 400;
-      var tick = _chartData.series.ticks.elementAt(i);
-      var yPosHigh = _worldToScreen(
+      final plotAreaTop = 10;
+      final plotAreaBottom = 400;
+      final tick = _chartData.series.ticks.elementAt(i);
+      final yPosHigh = _worldToScreen(
           _chartData.series, tick.high, plotAreaTop, plotAreaBottom);
-      var yPosLow = _worldToScreen(
+      final yPosLow = _worldToScreen(
           _chartData.series, tick.low, plotAreaTop, plotAreaBottom);
 
-      var x = (i * 6).toDouble();
+      final x = (i * spaceBetweenDivX).toDouble();
       canvas.drawLine(
           Offset(x, yPosHigh.toDouble()),
           Offset(x, yPosLow.toDouble()),

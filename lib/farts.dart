@@ -1,4 +1,4 @@
-library farts;
+library;
 
 import 'package:farts/models/chart_data.dart';
 import 'package:farts/painters/chart_painter.dart';
