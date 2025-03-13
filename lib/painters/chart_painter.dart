@@ -12,11 +12,16 @@ class ChartPainter extends CustomPainter {
   /// Data to draw on the chart. Includes tick data, indicators and annotations.
   final ChartData _chartData;
 
+  /// Stopwatch to measure drawing performance.
+  final Stopwatch _stopwatch = Stopwatch();
+
   /// Creates a [ChartPainter] that draws a chart using the given [ChartStyle].
   ChartPainter(this._chartStyle, this._chartData);
 
   @override
   void paint(Canvas canvas, Size size) {
+    _stopwatch.start();
+
     // Clip drawing area to chart bounds.
     final chartArea = Rect.fromLTRB(0, 0, size.width, size.height);
     canvas.clipRect(chartArea);
@@ -25,15 +30,17 @@ class ChartPainter extends CustomPainter {
 
     _drawData(canvas, chartArea, _chartData);
 
+    _stopwatch.stop();
     _drawDebugText(size, canvas);
+    _stopwatch.reset();
   }
 
   void _drawData(Canvas canvas, Rect chartArea, ChartData chartData) {
+    final plotAreaTop = 10;
+    final plotAreaBottom = 200;
     final spaceBetweenDivX = chartArea.width / _chartData.series.ticks.length;
 
     for (int i = 0; i < _chartData.series.ticks.length; ++i) {
-      final plotAreaTop = 10;
-      final plotAreaBottom = 400;
       final tick = _chartData.series.ticks.elementAt(i);
       final yPosHigh = _worldToScreen(
           _chartData.series, tick.high, plotAreaTop, plotAreaBottom);
@@ -46,7 +53,7 @@ class ChartPainter extends CustomPainter {
           Offset(x, yPosLow.toDouble()),
           Paint()
             ..color = _chartStyle.colors.lineColor
-            ..strokeWidth = 4);
+            ..strokeWidth = 2);
     }
   }
 
@@ -68,7 +75,7 @@ class ChartPainter extends CustomPainter {
 
     final textSpan = TextSpan(
       text:
-          '${size.width.toStringAsFixed(0)} x ${size.height.toStringAsFixed(0)}',
+          '${size.width.toStringAsFixed(0)} x ${size.height.toStringAsFixed(0)}\n${_stopwatch.elapsedMicroseconds} µs',
       style: textStyle,
     );
 
