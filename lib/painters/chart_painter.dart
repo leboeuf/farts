@@ -38,15 +38,6 @@ class ChartPainter extends CustomPainter {
     _stopwatch.reset();
   }
 
-  /// Calculate the width available to draw the ticks after
-  /// removing the legend, padding, etc.
-  double _calculateAvailableWidthForData(Rect chartArea) {
-    return chartArea.width -
-        _chartStyle.rightLegendWidth -
-        _chartStyle.chartPadding.horizontal -
-        _chartStyle.spacingBeforeYAxis;
-  }
-
   void _drawData(Canvas canvas, Rect chartArea) {
     final plotAreaTop = _chartStyle.chartPadding.top;
     final plotAreaBottom = 200;
@@ -150,7 +141,7 @@ class ChartPainter extends CustomPainter {
     final max = _chartData.series.max;
     final min = _chartData.series.min;
     final range = max - min;
-    final priceSteps = 10; //_findPriceScale(range);
+    final priceSteps = _findPriceScale(range);
     var currentPrice = (max / priceSteps).round() * priceSteps;
 
     final textPainter = TextPainter(textDirection: TextDirection.ltr);
@@ -226,6 +217,15 @@ class ChartPainter extends CustomPainter {
     return false;
   }
 
+  /// Calculate the width available to draw the ticks after
+  /// removing the legend, padding, etc.
+  double _calculateAvailableWidthForData(Rect chartArea) {
+    return chartArea.width -
+        _chartStyle.rightLegendWidth -
+        _chartStyle.chartPadding.horizontal -
+        _chartStyle.spacingBeforeYAxis;
+  }
+
   /// Translates a [price] into a vertical screen coordinate.
   /// [yMin] is the top of the drawing area and [yMax] is the bottom.
   int _worldToScreen(
@@ -240,5 +240,35 @@ class ChartPainter extends CustomPainter {
     final yOffset = yProp * (yMax - yMin);
 
     return yMin + yOffset.toInt();
+  }
+
+  /// Find the best price increments for the Y axis.
+  double _findPriceScale(double priceRange) {
+    const double minPriceIncrementsNb = 3;
+    const double maxPriceIncrementsNb = 10;
+
+    double nbSteps = 0;
+    for (double increment = 0.0001; increment <= 100000; increment *= 10) {
+      nbSteps = priceRange / increment;
+      if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
+        return increment;
+      }
+    }
+
+    for (double increment = 0.00025; increment <= 250000; increment *= 10) {
+      nbSteps = priceRange / increment;
+      if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
+        return increment;
+      }
+    }
+
+    for (double increment = 0.0005; increment <= 500000; increment *= 10) {
+      nbSteps = priceRange / increment;
+      if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
+        return increment;
+      }
+    }
+
+    throw Exception("No increment found for price axis.");
   }
 }
