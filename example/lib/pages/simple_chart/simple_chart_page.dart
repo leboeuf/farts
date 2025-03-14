@@ -1,6 +1,7 @@
 import 'package:example/fake_tick_data.dart';
 import 'package:farts/farts.dart';
 import 'package:farts/models/chart_data.dart';
+import 'package:farts/models/tick_collection.dart';
 import 'package:flutter/material.dart';
 
 class SimpleChartPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class SimpleChartPage extends StatelessWidget {
       body: Center(
         child: LayoutBuilder(
           builder: (context, constraints) => Fart(constraints.biggest,
-              chartData: ChartData(series: kFakeTickData)),
+              chartData: ChartData(series: TickCollection(kFakeTickData))),
         ),
       ),
     );

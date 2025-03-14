@@ -1,5 +1,5 @@
 import 'package:farts/models/chart_data.dart';
-import 'package:farts/models/tick_list.dart';
+import 'package:farts/models/tick_collection.dart';
 
 import '../models/chart_style.dart' show ChartStyle;
 import 'package:flutter/material.dart';
@@ -28,32 +28,158 @@ class ChartPainter extends CustomPainter {
 
     _drawBackground(canvas, chartArea);
 
-    _drawData(canvas, chartArea, _chartData);
+    if (_chartStyle.showXAxis) _drawXAxis(canvas, chartArea);
+    if (_chartStyle.showYAxis) _drawYAxis(canvas, chartArea);
+
+    _drawData(canvas, chartArea);
 
     _stopwatch.stop();
-    _drawDebugText(size, canvas);
+    if (_chartStyle.showDebugText) _drawDebugText(size, canvas);
     _stopwatch.reset();
   }
 
-  void _drawData(Canvas canvas, Rect chartArea, ChartData chartData) {
-    final plotAreaTop = 10;
+  /// Calculate the width available to draw the ticks after
+  /// removing the legend, padding, etc.
+  double _calculateAvailableWidthForData(Rect chartArea) {
+    return chartArea.width -
+        _chartStyle.rightLegendWidth -
+        _chartStyle.chartPadding.horizontal -
+        _chartStyle.spacingBeforeYAxis;
+  }
+
+  void _drawData(Canvas canvas, Rect chartArea) {
+    final plotAreaTop = _chartStyle.chartPadding.top;
     final plotAreaBottom = 200;
-    final spaceBetweenDivX = chartArea.width / _chartData.series.ticks.length;
+    final availableWidth = _calculateAvailableWidthForData(chartArea);
 
-    for (int i = 0; i < _chartData.series.ticks.length; ++i) {
+    // Calculate the space between each tick.
+    final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
+
+    // Draw each tick...
+    for (var i = 0; i < _chartData.series.ticks.length; ++i) {
       final tick = _chartData.series.ticks.elementAt(i);
-      final yPosHigh = _worldToScreen(
-          _chartData.series, tick.high, plotAreaTop, plotAreaBottom);
-      final yPosLow = _worldToScreen(
-          _chartData.series, tick.low, plotAreaTop, plotAreaBottom);
 
-      final x = (i * spaceBetweenDivX).toDouble();
+      // Get the Y position of the top of the tick.
+      final yPosHigh = _worldToScreen(
+        _chartData.series,
+        tick.high,
+        plotAreaTop.toInt(),
+        plotAreaBottom,
+      );
+
+      // Get the Y position of the bottom of the tick.
+      final yPosLow = _worldToScreen(
+        _chartData.series,
+        tick.low,
+        plotAreaTop.toInt(),
+        plotAreaBottom,
+      );
+
+      // Get the X position of the tick.
+      final x =
+          (i * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
+
+      // Draw the tick
       canvas.drawLine(
           Offset(x, yPosHigh.toDouble()),
           Offset(x, yPosLow.toDouble()),
           Paint()
             ..color = _chartStyle.colors.lineColor
             ..strokeWidth = 2);
+    }
+  }
+
+  void _drawXAxis(Canvas canvas, Rect chartArea) {
+    final paint = Paint()
+      ..color = _chartStyle.colors.axisColor
+      ..strokeWidth = 2;
+
+    // Get the Y position of the X axis.
+    final axisY = chartArea.bottom -
+        _chartStyle.chartPadding.bottom -
+        _chartStyle.bottomLegendHeight;
+
+    // Draw the X axis.
+    canvas.drawLine(
+      Offset(_chartStyle.chartPadding.left, axisY),
+      Offset(
+          chartArea.width -
+              _chartStyle.rightLegendWidth -
+              _chartStyle.chartPadding.right,
+          axisY),
+      paint,
+    );
+
+    // Draw the dashed lines.
+    if (_chartStyle.axisDashThickness > 0) {
+      final availableWidth = _calculateAvailableWidthForData(chartArea);
+      final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
+      for (var i = 0; i < _chartData.series.ticks.length; ++i) {
+        final x = i * spaceBetweenDivX + _chartStyle.chartPadding.left;
+        canvas.drawLine(
+          Offset(x, axisY - _chartStyle.axisDashThickness),
+          Offset(x, axisY + _chartStyle.axisDashThickness),
+          paint,
+        );
+      }
+    }
+  }
+
+  void _drawYAxis(Canvas canvas, Rect chartArea) {
+    final paint = Paint()
+      ..color = _chartStyle.colors.axisColor
+      ..strokeWidth = 2;
+
+    // Get the X position of the Y axis.
+    final axisX = chartArea.width -
+        _chartStyle.rightLegendWidth -
+        _chartStyle.chartPadding.right;
+    final axisTopY = _chartStyle.chartPadding.top;
+    final axisBottomY = chartArea.bottom -
+        _chartStyle.chartPadding.bottom -
+        _chartStyle.bottomLegendHeight -
+        0;
+
+    // Draw the Y axis.
+    canvas.drawLine(
+      Offset(axisX, axisTopY),
+      Offset(axisX, axisBottomY),
+      paint,
+    );
+
+    final max = _chartData.series.max;
+    final min = _chartData.series.min;
+    final range = max - min;
+    final priceSteps = 10; //_findPriceScale(range);
+    var currentPrice = (max / priceSteps).round() * priceSteps;
+
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+    final labelStyle =
+        TextStyle(color: _chartStyle.colors.axisLabelsColor, fontSize: 12);
+
+    while (currentPrice >= min) {
+      final y = _worldToScreen(_chartData.series, currentPrice.toDouble(),
+              axisTopY.toInt(), axisBottomY.toInt())
+          .toDouble();
+      canvas.drawLine(
+        Offset(axisX - _chartStyle.axisDashThickness, y),
+        Offset(axisX + _chartStyle.axisDashThickness, y),
+        paint,
+      );
+
+      // Show decimals only if the range is not too big.
+      final formattedPrice = range > 80
+          ? currentPrice.toStringAsFixed(0)
+          : currentPrice.toStringAsFixed(2);
+      final textSpan = TextSpan(text: formattedPrice, style: labelStyle);
+      textPainter.text = textSpan;
+      textPainter.layout();
+      textPainter.paint(
+          canvas,
+          Offset(axisX + _chartStyle.spacingBeforeYLegend,
+              y - textPainter.height / 2));
+
+      currentPrice -= priceSteps;
     }
   }
 
@@ -102,7 +228,12 @@ class ChartPainter extends CustomPainter {
 
   /// Translates a [price] into a vertical screen coordinate.
   /// [yMin] is the top of the drawing area and [yMax] is the bottom.
-  int _worldToScreen(TickList tickData, double price, int yMin, int yMax) {
+  int _worldToScreen(
+    TickCollection tickData,
+    double price,
+    int yMin,
+    int yMax,
+  ) {
     final range = tickData.max - tickData.min;
 
     final yProp = 1 - ((price - tickData.min) / range);

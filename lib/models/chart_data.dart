@@ -1,10 +1,9 @@
-import 'package:farts/models/tick.dart';
-import 'package:farts/models/tick_list.dart';
+import 'package:farts/models/tick_collection.dart';
 
 class ChartData {
-  late TickList series;
+  late TickCollection series;
 
-  ChartData({List<Tick>? series}) {
-    this.series = TickList(series ?? []);
+  ChartData({TickCollection? series}) {
+    this.series = series ?? TickCollection([]);
   }
 }
