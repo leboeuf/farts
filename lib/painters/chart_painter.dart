@@ -49,9 +49,8 @@ class ChartPainter extends CustomPainter {
     final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
 
     // Draw each tick...
-    for (var i = 0; i < _chartData.series.ticks.length; ++i) {
-      final tick = _chartData.series.ticks.elementAt(i);
-
+    var i = 0;
+    for (var tick in _chartData.series.ticks) {
       // Get the Y position of the top of the tick.
       final yPosHigh = _worldToScreen(
         _chartData.series,
@@ -70,7 +69,7 @@ class ChartPainter extends CustomPainter {
 
       // Get the X position of the tick.
       final x =
-          (i * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
+          (i++ * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
 
       // Draw the tick
       canvas.drawLine(
@@ -97,9 +96,8 @@ class ChartPainter extends CustomPainter {
     final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
 
     // Draw each tick...
-    for (var i = 0; i < indicator.data.length; ++i) {
-      final value = indicator.data.elementAt(i);
-
+    var i = 0;
+    for (var value in indicator.data) {
       // Get the Y position of the top of the tick.
       final yPosHigh = _worldToScreen(
         _chartData.series,
@@ -118,7 +116,7 @@ class ChartPainter extends CustomPainter {
 
       // Get the X position of the tick.
       final x =
-          (i * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
+          (i++ * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
 
       // Draw the tick
       canvas.drawLine(
@@ -298,21 +296,21 @@ class ChartPainter extends CustomPainter {
     const double maxPriceIncrementsNb = 10;
 
     double nbSteps = 0;
-    for (double increment = 0.0001; increment <= 100000; increment *= 10) {
+    for (var increment = 0.0001; increment <= 100000; increment *= 10) {
       nbSteps = priceRange / increment;
       if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
         return increment;
       }
     }
 
-    for (double increment = 0.00025; increment <= 250000; increment *= 10) {
+    for (var increment = 0.00025; increment <= 250000; increment *= 10) {
       nbSteps = priceRange / increment;
       if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
         return increment;
       }
     }
 
-    for (double increment = 0.0005; increment <= 500000; increment *= 10) {
+    for (var increment = 0.0005; increment <= 500000; increment *= 10) {
       nbSteps = priceRange / increment;
       if (nbSteps >= minPriceIncrementsNb && nbSteps <= maxPriceIncrementsNb) {
         return increment;
