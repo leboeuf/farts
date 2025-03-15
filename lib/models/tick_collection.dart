@@ -1,3 +1,4 @@
+import 'package:farts/models/indicator.dart';
 import 'package:farts/models/tick.dart';
 
 /// Holds a list of ticks and memoizes its min and max values.
@@ -7,12 +8,16 @@ class TickCollection {
   List<Tick> _ticks;
   double? _min;
   double? _max;
+  List<Indicator> _indicators;
 
-  TickCollection(List<Tick> ticks) : _ticks = ticks {
+  TickCollection(List<Tick> ticks, {List<Indicator>? indicators})
+      : _ticks = ticks,
+        _indicators = indicators ?? [] {
     _calculateMinMax();
   }
 
   List<Tick> get ticks => _ticks;
+  List<Indicator> get indicators => _indicators;
 
   set ticks(List<Tick> newTicks) {
     _ticks = newTicks;
