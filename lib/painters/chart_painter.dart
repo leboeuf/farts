@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 part 'chart_painter.axes.dart';
 part 'chart_painter.data.dart';
-part 'chart_painter.indicators.dart';
 part 'chart_painter.debug.dart';
+part 'chart_painter.indicators.dart';
+part 'chart_painter.perf.dart';
 
 /// A [CustomPainter] implementation to draw financial charts.
 class ChartPainter extends CustomPainter {
@@ -24,6 +25,9 @@ class ChartPainter extends CustomPainter {
   /// Creates a [ChartPainter] that draws a chart using the given [ChartStyle].
   ChartPainter(this._chartStyle, this._chartData);
 
+  /// Number of indicators below the chart. Used to compute available height.
+  late final int _numIndicatorsBelowChart;
+
   @override
   void paint(Canvas canvas, Size size) {
     _stopwatch.start();
@@ -31,6 +35,8 @@ class ChartPainter extends CustomPainter {
     // Clip drawing area to chart bounds.
     final chartArea = Rect.fromLTRB(0, 0, size.width, size.height);
     canvas.clipRect(chartArea);
+
+    _preprocess(chartArea);
 
     _drawBackground(canvas, chartArea);
 

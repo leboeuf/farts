@@ -2,12 +2,6 @@ part of 'chart_painter.dart';
 
 extension Indicators on ChartPainter {
   void _drawIndicators(Canvas canvas, Rect chartArea) {
-    // TODO: draw indicators that are below the chart.
-    // Maybe make each of them take 20% height, limit to 3 indicators.
-
-    var indicatorsBelowChart = _chartData.series.indicators
-        .where((x) => x.type > 0)
-        .length; // TODO: drawData() also need to know, axes too, in order to know their height
     for (var indicator in _chartData.series.indicators) {
       _drawIndicator(canvas, chartArea, indicator);
     }
