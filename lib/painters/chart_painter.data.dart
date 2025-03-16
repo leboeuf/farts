@@ -12,7 +12,7 @@ extension Data on ChartPainter {
         _chartData.series,
         tick.high,
         plotAreaTop.toInt(),
-        _mainChartHeight,
+        _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
       // Get the Y position of the bottom of the tick.
@@ -20,7 +20,7 @@ extension Data on ChartPainter {
         _chartData.series,
         tick.low,
         plotAreaTop.toInt(),
-        _mainChartHeight,
+        _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
       // Get the X position of the tick.

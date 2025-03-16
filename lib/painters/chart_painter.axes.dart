@@ -7,9 +7,8 @@ extension Axes on ChartPainter {
       ..strokeWidth = 2;
 
     // Get the Y position of the X axis.
-    final axisY = chartArea.bottom -
-        _chartStyle.chartPadding.bottom -
-        _chartStyle.bottomLegendHeight;
+    final axisY =
+        (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble();
 
     // Draw the X axis.
     canvas.drawLine(

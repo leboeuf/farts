@@ -65,7 +65,7 @@ class ChartStyle {
     this.showYAxis = true,
     this.showDebugText = true,
     this.rightLegendWidth = 50,
-    this.bottomLegendHeight = 20,
+    this.bottomLegendHeight = 30,
     this.chartPadding = const EdgeInsets.all(8),
     this.spacingBeforeYAxis = 2,
     this.spacingBeforeYLegend = 5,
