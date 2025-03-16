@@ -44,15 +44,12 @@ extension Axes on ChartPainter {
         _chartStyle.rightLegendWidth -
         _chartStyle.chartPadding.right;
     final axisTopY = _chartStyle.chartPadding.top;
-    final axisBottomY = chartArea.bottom -
-        _chartStyle.chartPadding.bottom -
-        _chartStyle.bottomLegendHeight -
-        0;
+    final axisBottomY = _mainChartHeight - _chartStyle.bottomLegendHeight;
 
     // Draw the Y axis.
     canvas.drawLine(
       Offset(axisX, axisTopY),
-      Offset(axisX, axisBottomY),
+      Offset(axisX, axisBottomY.toDouble()),
       paint,
     );
 

@@ -10,7 +10,6 @@ extension Indicators on ChartPainter {
   void _drawIndicator(
       Size size, Canvas canvas, Rect chartArea, Indicator indicator) {
     final plotAreaTop = _chartStyle.chartPadding.top;
-    final plotAreaBottom = 200;
 
     if (indicator.type > 0) {
       // TODO: include padding
@@ -18,10 +17,13 @@ extension Indicators on ChartPainter {
           (_numIndicatorsBelowChartDrawn++ * _indicatorHeight);
       var yBottom = yTop + _indicatorHeight;
 
-      canvas.drawLine(
-          Offset(200, yTop.toDouble()),
-          Offset(200, yBottom.toDouble()),
+      canvas.drawRect(
+          Rect.fromPoints(
+            Offset(0, yTop.toDouble()),
+            Offset(_widthAvailableForData, yBottom.toDouble()),
+          ),
           Paint()
+            ..style = PaintingStyle.stroke
             ..color = indicator.color
             ..strokeWidth = 2);
     }
@@ -34,7 +36,7 @@ extension Indicators on ChartPainter {
         _chartData.series,
         value,
         plotAreaTop.toInt(),
-        plotAreaBottom,
+        _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
       // Get the Y position of the bottom of the tick.
@@ -42,7 +44,7 @@ extension Indicators on ChartPainter {
         _chartData.series,
         value,
         plotAreaTop.toInt(),
-        plotAreaBottom,
+        _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
       // Get the X position of the tick.
