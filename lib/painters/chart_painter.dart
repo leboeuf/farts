@@ -1,6 +1,5 @@
 import 'package:farts/models/chart_data.dart';
 import 'package:farts/models/indicator.dart';
-import 'package:farts/models/tick_collection.dart';
 
 import '../models/chart_style.dart' show ChartStyle;
 import 'package:flutter/material.dart';

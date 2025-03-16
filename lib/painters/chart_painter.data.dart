@@ -2,25 +2,27 @@ part of 'chart_painter.dart';
 
 extension Data on ChartPainter {
   void _drawData(Canvas canvas, Rect chartArea) {
-    final plotAreaTop = _chartStyle.chartPadding.top.toInt();
+    final plotAreaTop = _chartStyle.chartPadding.top;
 
     // Draw each tick...
     var i = 0;
     for (var tick in _chartData.series.ticks) {
       // Get the Y position of the top of the tick.
       final yPosHigh = _worldToScreen(
-        _chartData.series,
+        _chartData.series.min,
+        _chartData.series.max,
         tick.high,
         plotAreaTop,
-        _mainChartHeight - _chartStyle.bottomLegendHeight,
+        (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble(),
       );
 
       // Get the Y position of the bottom of the tick.
       final yPosLow = _worldToScreen(
-        _chartData.series,
+        _chartData.series.min,
+        _chartData.series.max,
         tick.low,
         plotAreaTop,
-        _mainChartHeight - _chartStyle.bottomLegendHeight,
+        (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble(),
       );
 
       // Get the X position of the tick.
@@ -40,16 +42,17 @@ extension Data on ChartPainter {
   /// Translates a [price] into a vertical screen coordinate.
   /// [yMin] is the top of the drawing area and [yMax] is the bottom.
   int _worldToScreen(
-    TickCollection tickData,
+    double minValue,
+    double maxValue,
     double price,
-    int yMin,
-    int yMax,
+    double yMin,
+    double yMax,
   ) {
-    final range = tickData.max - tickData.min;
+    final range = maxValue - minValue;
 
-    final yProp = 1 - ((price - tickData.min) / range);
+    final yProp = 1 - ((price - minValue) / range);
     final yOffset = yProp * (yMax - yMin);
 
-    return yMin + yOffset.toInt();
+    return (yMin + yOffset).toInt();
   }
 }

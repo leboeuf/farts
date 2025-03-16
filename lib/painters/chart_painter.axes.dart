@@ -64,9 +64,13 @@ extension Axes on ChartPainter {
         TextStyle(color: _chartStyle.colors.axisLabelsColor, fontSize: 12);
 
     while (currentPrice >= min) {
-      final y = _worldToScreen(_chartData.series, currentPrice.toDouble(),
-              axisTopY.toInt(), axisBottomY.toInt())
-          .toDouble();
+      final y = _worldToScreen(
+        _chartData.series.min,
+        _chartData.series.max,
+        currentPrice,
+        axisTopY,
+        axisBottomY.toDouble(),
+      ).toDouble();
       canvas.drawLine(
         Offset(axisX - _chartStyle.axisDashThickness, y),
         Offset(axisX + _chartStyle.axisDashThickness, y),

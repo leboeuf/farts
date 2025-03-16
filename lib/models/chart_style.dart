@@ -42,7 +42,7 @@ class ChartStyle {
   final int bottomLegendHeight;
 
   /// The thickness of the dashes on the axes (for each date or price level).
-  final int axisDashThickness = 3;
+  final int axisDashThickness = 0;
 
   /// The padding around the chart.
   final EdgeInsets chartPadding;
