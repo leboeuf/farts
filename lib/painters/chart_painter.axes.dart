@@ -24,10 +24,8 @@ extension Axes on ChartPainter {
 
     // Draw the dashed lines.
     if (_chartStyle.axisDashThickness > 0) {
-      final availableWidth = _calculateAvailableWidthForData(chartArea);
-      final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
       for (var i = 0; i < _chartData.series.ticks.length; ++i) {
-        final x = i * spaceBetweenDivX + _chartStyle.chartPadding.left;
+        final x = i * _spaceBetweenDivX + _chartStyle.chartPadding.left;
         canvas.drawLine(
           Offset(x, axisY - _chartStyle.axisDashThickness),
           Offset(x, axisY + _chartStyle.axisDashThickness),

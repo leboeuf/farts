@@ -1,19 +1,30 @@
 part of 'chart_painter.dart';
 
 extension Indicators on ChartPainter {
-  void _drawIndicators(Canvas canvas, Rect chartArea) {
+  void _drawIndicators(Size size, Canvas canvas, Rect chartArea) {
     for (var indicator in _chartData.series.indicators) {
-      _drawIndicator(canvas, chartArea, indicator);
+      _drawIndicator(size, canvas, chartArea, indicator);
     }
   }
 
-  void _drawIndicator(Canvas canvas, Rect chartArea, Indicator indicator) {
+  void _drawIndicator(
+      Size size, Canvas canvas, Rect chartArea, Indicator indicator) {
     final plotAreaTop = _chartStyle.chartPadding.top;
     final plotAreaBottom = 200;
-    final availableWidth = _calculateAvailableWidthForData(chartArea);
 
-    // Calculate the space between each tick.
-    final spaceBetweenDivX = availableWidth / _chartData.series.ticks.length;
+    if (indicator.type > 0) {
+      // TODO: include padding
+      var yTop = _mainChartHeight +
+          (_numIndicatorsBelowChartDrawn++ * _indicatorHeight);
+      var yBottom = yTop + _indicatorHeight;
+
+      canvas.drawLine(
+          Offset(200, yTop.toDouble()),
+          Offset(200, yBottom.toDouble()),
+          Paint()
+            ..color = indicator.color
+            ..strokeWidth = 2);
+    }
 
     // Draw each tick...
     var i = 0;
@@ -36,7 +47,7 @@ extension Indicators on ChartPainter {
 
       // Get the X position of the tick.
       final x =
-          (i++ * spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
+          (i++ * _spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
 
       // Draw the tick
       canvas.drawLine(

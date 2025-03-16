@@ -10,6 +10,7 @@ part 'chart_painter.data.dart';
 part 'chart_painter.debug.dart';
 part 'chart_painter.indicators.dart';
 part 'chart_painter.perf.dart';
+part 'chart_painter.validations.dart';
 
 /// A [CustomPainter] implementation to draw financial charts.
 class ChartPainter extends CustomPainter {
@@ -25,8 +26,23 @@ class ChartPainter extends CustomPainter {
   /// Creates a [ChartPainter] that draws a chart using the given [ChartStyle].
   ChartPainter(this._chartStyle, this._chartData);
 
-  /// Number of indicators below the chart. Used to compute available height.
-  late final int _numIndicatorsBelowChart;
+  /// The number of indicators below the chart. Used to compute available height.
+  int _numIndicatorsBelowChart = 0;
+
+  /// The counter of the number of indicators below the chart that have been drawn.
+  int _numIndicatorsBelowChartDrawn = 0;
+
+  /// The height of the main chart area (above the indicators).
+  int _mainChartHeight = 0;
+
+  /// The height of each indicator below the chart.
+  int _indicatorHeight = 0;
+
+  /// The width available to draw the data after removing the legend, padding, etc.
+  double _widthAvailableForData = 0;
+
+  /// The space between each tick on the X axis.
+  double _spaceBetweenDivX = 0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -38,13 +54,17 @@ class ChartPainter extends CustomPainter {
 
     _preprocess(chartArea);
 
+    if (!_validate(size, canvas)) {
+      return;
+    }
+
     _drawBackground(canvas, chartArea);
 
     if (_chartStyle.showXAxis) _drawXAxis(canvas, chartArea);
     if (_chartStyle.showYAxis) _drawYAxis(canvas, chartArea);
 
     _drawData(canvas, chartArea);
-    _drawIndicators(canvas, chartArea);
+    _drawIndicators(size, canvas, chartArea);
 
     _stopwatch.stop();
     if (_chartStyle.showDebugText) _drawDebugText(size, canvas);

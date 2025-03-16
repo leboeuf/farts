@@ -54,6 +54,10 @@ class ChartStyle {
   /// The spacing between the Y axis and its legend (the spacing before the prices).
   final int spacingBeforeYLegend;
 
+  /// The height ratio of indicators displayed below the chart, relative to the main chart area.
+  /// For example, a ratio of 0.2 means the indicator takes 20% of the total chart height.
+  final double indicatorHeightRatio;
+
   /// Creates the visual style of the chart.
   ChartStyle({
     ChartColors? chartColors,
@@ -65,5 +69,6 @@ class ChartStyle {
     this.chartPadding = const EdgeInsets.all(8),
     this.spacingBeforeYAxis = 2,
     this.spacingBeforeYLegend = 5,
+    this.indicatorHeightRatio = 0.2,
   }) : colors = chartColors ?? ChartColors();
 }
