@@ -8,9 +8,10 @@ extension Perf on ChartPainter {
     _indicatorHeight =
         (_chartStyle.indicatorHeightRatio * chartArea.height).round();
 
-    _mainChartHeight =
-        (chartArea.height - (_numIndicatorsBelowChart * _indicatorHeight))
-            .round();
+    _mainChartHeight = (chartArea.height -
+            _chartStyle.chartPadding.top -
+            (_numIndicatorsBelowChart * _indicatorHeight))
+        .round();
 
     _widthAvailableForData = chartArea.width -
         _chartStyle.rightLegendWidth -

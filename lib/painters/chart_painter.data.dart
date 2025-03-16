@@ -2,7 +2,7 @@ part of 'chart_painter.dart';
 
 extension Data on ChartPainter {
   void _drawData(Canvas canvas, Rect chartArea) {
-    final plotAreaTop = _chartStyle.chartPadding.top;
+    final plotAreaTop = _chartStyle.chartPadding.top.toInt();
 
     // Draw each tick...
     var i = 0;
@@ -11,7 +11,7 @@ extension Data on ChartPainter {
       final yPosHigh = _worldToScreen(
         _chartData.series,
         tick.high,
-        plotAreaTop.toInt(),
+        plotAreaTop,
         _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
@@ -19,7 +19,7 @@ extension Data on ChartPainter {
       final yPosLow = _worldToScreen(
         _chartData.series,
         tick.low,
-        plotAreaTop.toInt(),
+        plotAreaTop,
         _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 

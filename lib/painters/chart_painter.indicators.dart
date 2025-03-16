@@ -9,17 +9,17 @@ extension Indicators on ChartPainter {
 
   void _drawIndicator(
       Size size, Canvas canvas, Rect chartArea, Indicator indicator) {
-    final plotAreaTop = _chartStyle.chartPadding.top;
+    final plotAreaTop = _chartStyle.chartPadding.top.toInt();
 
     if (indicator.type > 0) {
-      // TODO: include padding
       var yTop = _mainChartHeight +
+          _chartStyle.chartPadding.top +
           (_numIndicatorsBelowChartDrawn++ * _indicatorHeight);
-      var yBottom = yTop + _indicatorHeight;
+      var yBottom = yTop + _indicatorHeight - _chartStyle.chartPadding.bottom;
 
       canvas.drawRect(
           Rect.fromPoints(
-            Offset(0, yTop.toDouble()),
+            Offset(_chartStyle.chartPadding.left, yTop.toDouble()),
             Offset(_widthAvailableForData, yBottom.toDouble()),
           ),
           Paint()
@@ -35,7 +35,7 @@ extension Indicators on ChartPainter {
       final yPosHigh = _worldToScreen(
         _chartData.series,
         value,
-        plotAreaTop.toInt(),
+        plotAreaTop,
         _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
@@ -43,7 +43,7 @@ extension Indicators on ChartPainter {
       final yPosLow = _worldToScreen(
         _chartData.series,
         value,
-        plotAreaTop.toInt(),
+        plotAreaTop,
         _mainChartHeight - _chartStyle.bottomLegendHeight,
       );
 
