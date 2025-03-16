@@ -32,6 +32,9 @@ class ChartPainter extends CustomPainter {
   /// The counter of the number of indicators below the chart that have been drawn.
   int _numIndicatorsBelowChartDrawn = 0;
 
+  /// The counter of the number of indicators in the main chart that have been drawn.
+  int _numMainIndicatorsDrawn = 0;
+
   /// The height of the main chart area (above the indicators).
   int _mainChartHeight = 0;
 
@@ -84,5 +87,26 @@ class ChartPainter extends CustomPainter {
     );
     canvas.drawRect(
         chartArea, Paint()..shader = bgGradient.createShader(chartArea));
+  }
+
+  void _drawText(Size size, Canvas canvas, String text, double x, double y,
+      Color color, double fontSize) {
+    final textSpan = TextSpan(
+      text: text,
+      style: TextStyle(color: color, fontSize: fontSize),
+    );
+
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      minWidth: 0,
+      maxWidth: size.width,
+    );
+
+    final offset = Offset(x, y);
+    textPainter.paint(canvas, offset);
   }
 }

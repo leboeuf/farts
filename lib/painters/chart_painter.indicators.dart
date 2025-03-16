@@ -26,6 +26,26 @@ extension Indicators on ChartPainter {
             ..style = PaintingStyle.stroke
             ..color = indicator.color
             ..strokeWidth = 2);
+
+      _drawText(
+        size,
+        canvas,
+        indicator.name,
+        _chartStyle.chartPadding.left + 2,
+        yTop,
+        indicator.color,
+        12,
+      );
+    } else {
+      _drawText(
+        size,
+        canvas,
+        indicator.name,
+        _chartStyle.chartPadding.left + 2,
+        _chartStyle.chartPadding.top + 2 + (_numMainIndicatorsDrawn++ * 14),
+        indicator.color,
+        12,
+      );
     }
 
     // Draw each tick...

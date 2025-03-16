@@ -4,8 +4,8 @@ import 'package:farts/models/indicator.dart';
 List<Indicator> kFakeIndicatorsData = [
   Indicator('SMA 50', 0, Colors.blue, kSma50data),
   Indicator('SMA 200', 0, Colors.orange, kSma200data),
-  Indicator('RSI', 1, Colors.yellow, kRsiData),
-  Indicator('RSI', 1, Colors.cyan, kRsiData),
+  Indicator('RSI 14', 1, Colors.yellow, kRsiData),
+  Indicator('RSI 14', 1, Colors.cyan, kRsiData),
 ];
 
 List<double> kSma50data = [

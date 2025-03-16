@@ -19,22 +19,6 @@ extension Validations on ChartPainter {
   }
 
   void _drawError(Size size, Canvas canvas, String text) {
-    final textSpan = TextSpan(
-      text: 'Error: $text',
-      style: TextStyle(color: Colors.red),
-    );
-
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
-
-    textPainter.layout(
-      minWidth: 0,
-      maxWidth: size.width,
-    );
-
-    final offset = Offset(0, 0);
-    textPainter.paint(canvas, offset);
+    _drawText(size, canvas, 'Error: $text', 0, 0, Colors.red, 14);
   }
 }
