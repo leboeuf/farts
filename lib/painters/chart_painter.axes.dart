@@ -4,7 +4,7 @@ extension Axes on ChartPainter {
   void _drawXAxis(Canvas canvas, Rect chartArea) {
     final paint = Paint()
       ..color = _chartStyle.colors.axisColor
-      ..strokeWidth = 2;
+      ..strokeWidth = _chartStyle.axisThickness;
 
     // Get the Y position of the X axis.
     final axisY =
@@ -37,7 +37,7 @@ extension Axes on ChartPainter {
   void _drawYAxis(Canvas canvas, Rect chartArea) {
     final paint = Paint()
       ..color = _chartStyle.colors.axisColor
-      ..strokeWidth = 2;
+      ..strokeWidth = _chartStyle.axisThickness;
 
     // Get the X position of the Y axis.
     final axisX = chartArea.width -
@@ -71,11 +71,14 @@ extension Axes on ChartPainter {
         axisTopY,
         axisBottomY.toDouble(),
       ).toDouble();
-      canvas.drawLine(
-        Offset(axisX - _chartStyle.axisDashThickness, y),
-        Offset(axisX + _chartStyle.axisDashThickness, y),
-        paint,
-      );
+
+      if (_chartStyle.axisDashThickness > 0) {
+        canvas.drawLine(
+          Offset(axisX - _chartStyle.axisDashThickness, y),
+          Offset(axisX + _chartStyle.axisDashThickness, y),
+          paint,
+        );
+      }
 
       // Show decimals only if the range is not too big.
       final formattedPrice = range > 80

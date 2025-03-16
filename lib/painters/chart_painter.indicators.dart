@@ -27,16 +27,18 @@ extension Indicators on ChartPainter {
       plotAreaBottom =
           plotAreaTop + _indicatorHeight - _chartStyle.chartPadding.bottom;
 
-      canvas.drawRect(
-          Rect.fromPoints(
-            Offset(_chartStyle.chartPadding.left, plotAreaTop),
-            Offset(_widthAvailableForData + _chartStyle.chartPadding.left,
-                plotAreaBottom),
-          ),
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..color = indicator.color
-            ..strokeWidth = 2);
+      if (_chartStyle.indicatorBorderThickness > 0) {
+        canvas.drawRect(
+            Rect.fromPoints(
+              Offset(_chartStyle.chartPadding.left, plotAreaTop),
+              Offset(_widthAvailableForData + _chartStyle.chartPadding.left,
+                  plotAreaBottom),
+            ),
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..color = _chartStyle.colors.indicatorBorderColor
+              ..strokeWidth = _chartStyle.indicatorBorderThickness);
+      }
 
       _drawText(
         size,

@@ -19,6 +19,9 @@ class ChartColors {
 
   /// The color to use for axis labels.
   Color axisLabelsColor = const Color(0xffcecece);
+
+  /// The color to use for the border of indicators below the chart.
+  Color indicatorBorderColor = const Color(0xff5e5e5e);
 }
 
 /// The visual style of the chart.
@@ -41,8 +44,11 @@ class ChartStyle {
   /// The height of the bottom legend (the date labels area).
   final int bottomLegendHeight;
 
+  /// The thickness of the main chart's axes.
+  final double axisThickness;
+
   /// The thickness of the dashes on the axes (for each date or price level).
-  final int axisDashThickness = 0;
+  final int axisDashThickness;
 
   /// The padding around the chart.
   final EdgeInsets chartPadding;
@@ -58,6 +64,12 @@ class ChartStyle {
   /// For example, a ratio of 0.2 means the indicator takes 20% of the total chart height.
   final double indicatorHeightRatio;
 
+  /// Whether to display the indicator name in the top left corner.
+  final bool showIndicatorName;
+
+  /// The thickness of the border around the indicators below the chart.
+  final double indicatorBorderThickness;
+
   /// Creates the visual style of the chart.
   ChartStyle({
     ChartColors? chartColors,
@@ -66,9 +78,13 @@ class ChartStyle {
     this.showDebugText = true,
     this.rightLegendWidth = 50,
     this.bottomLegendHeight = 30,
+    this.axisThickness = 2,
+    this.axisDashThickness = 0,
     this.chartPadding = const EdgeInsets.all(8),
     this.spacingBeforeYAxis = 2,
     this.spacingBeforeYLegend = 5,
     this.indicatorHeightRatio = 0.2,
+    this.showIndicatorName = true,
+    this.indicatorBorderThickness = 2,
   }) : colors = chartColors ?? ChartColors();
 }
