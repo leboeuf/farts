@@ -25,9 +25,11 @@ class Fart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: _size,
-      painter: ChartPainter(_chartStyle, _chartData),
+    return RepaintBoundary(
+      child: CustomPaint(
+        size: _size,
+        painter: ChartPainter(_chartStyle, _chartData),
+      ),
     );
   }
 }
