@@ -90,7 +90,7 @@ class ChartStyle {
     this.showYAxis = true,
     this.showDebugText = true,
     this.rightLegendWidth = 50,
-    this.bottomLegendHeight = 30,
+    this.bottomLegendHeight = 8,
     this.axisThickness = 2,
     this.axisDashThickness = 0,
     this.chartPadding = const EdgeInsets.all(8),
