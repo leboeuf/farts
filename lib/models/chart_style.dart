@@ -3,25 +3,38 @@ import 'package:flutter/widgets.dart';
 /// The color palette to use when drawing the chart.
 class ChartColors {
   /// The background color. Specify multiple colors to create a gradient.
-  List<Color> backgroundColor = const [Color(0xff18191d), Color(0xff18191d)];
+  final List<Color> backgroundColor;
 
   /// The color of the series.
-  Color lineColor = const Color(0x554C86CD);
+  final Color lineColor;
 
   /// The color to use for bullish data.
-  Color bullColor = const Color(0xff4DAA90);
+  final Color bullColor;
 
   /// The color to use for bearish data.
-  Color bearColor = const Color(0xffC15466);
+  final Color bearColor;
 
   /// The color to use for axis lines.
-  Color axisColor = const Color(0xff5e5e5e);
+  final Color axisColor;
 
   /// The color to use for axis labels.
-  Color axisLabelsColor = const Color(0xffcecece);
+  final Color axisLabelsColor;
 
   /// The color to use for the border of indicators below the chart.
-  Color indicatorBorderColor = const Color(0xff5e5e5e);
+  final Color indicatorBorderColor;
+
+  ChartColors({
+    this.backgroundColor = const [
+      Color.fromRGBO(15, 23, 42, 1),
+      Color.fromRGBO(15, 23, 42, 1)
+    ],
+    this.lineColor = const Color(0x554C86CD),
+    this.bullColor = const Color(0xff4DAA90),
+    this.bearColor = const Color(0xffC15466),
+    this.axisColor = const Color(0xff5e5e5e),
+    this.axisLabelsColor = const Color(0xffcecece),
+    this.indicatorBorderColor = const Color(0xff5e5e5e),
+  });
 }
 
 /// The visual style of the chart.
