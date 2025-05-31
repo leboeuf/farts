@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 part 'chart_painter.axes.dart';
 part 'chart_painter.data.dart';
 part 'chart_painter.debug.dart';
+part 'chart_painter.events.dart';
 part 'chart_painter.indicators.dart';
 part 'chart_painter.perf.dart';
 part 'chart_painter.validations.dart';

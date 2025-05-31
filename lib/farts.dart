@@ -18,6 +18,9 @@ class Fart extends StatelessWidget {
   /// The series to draw on the chart, including indicators.
   final ChartData _chartData;
 
+  /// The CustomPainter that draws the chart and stores local state.
+  ChartPainter? _chartPainter;
+
   /// Creates a Flutter chart.
   Fart(this._size, {super.key, ChartStyle? chartStyle, ChartData? chartData})
       : _chartStyle = chartStyle ?? ChartStyle(),
@@ -25,10 +28,15 @@ class Fart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _chartPainter ??= ChartPainter(_chartStyle, _chartData);
+
     return RepaintBoundary(
-      child: CustomPaint(
-        size: _size,
-        painter: ChartPainter(_chartStyle, _chartData),
+      child: GestureDetector(
+        onPanUpdate: (details) => _chartPainter!.onPanUpdate(details),
+        child: CustomPaint(
+          size: _size,
+          painter: _chartPainter,
+        ),
       ),
     );
   }
