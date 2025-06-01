@@ -13,7 +13,7 @@ part 'chart_painter.perf.dart';
 part 'chart_painter.validations.dart';
 
 /// A [CustomPainter] implementation to draw financial charts.
-class ChartPainter extends CustomPainter {
+class ChartPainter extends CustomPainter with ChangeNotifier {
   /// The [ChartStyle] to use to draw the chart.
   final ChartStyle _chartStyle;
 
@@ -46,6 +46,18 @@ class ChartPainter extends CustomPainter {
 
   /// The space between each tick on the X axis.
   double _spaceBetweenDivX = 0;
+
+  /// The max value to use when calculating the Y axis range.
+  /// By default, the Y axis range is determined by the minimum and maximum values
+  /// present in the chart data. Howerver, if the user performs a pan gesture on the Y axis,
+  /// this value is set to allow manual adjustment of the visible range.
+  double? _yAxisOverrideMax;
+
+  /// The min value to use when calculating the Y axis range.
+  /// By default, the Y axis range is determined by the minimum and maximum values
+  /// present in the chart data. However, if the user performs a pan gesture on the Y axis,
+  /// this value is set to allow manual adjustment of the visible range.
+  double? _yAxisOverrideMin;
 
   @override
   void paint(Canvas canvas, Size size) {

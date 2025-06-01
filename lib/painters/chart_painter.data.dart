@@ -9,8 +9,8 @@ extension Data on ChartPainter {
     for (var tick in _chartData.series.ticks) {
       // Get the Y position of the top of the tick.
       final yPosHigh = _worldToScreen(
-        _chartData.series.min,
-        _chartData.series.max,
+        _yAxisOverrideMin ?? _chartData.series.min,
+        _yAxisOverrideMax ?? _chartData.series.max,
         tick.high,
         plotAreaTop,
         (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble(),
@@ -18,8 +18,8 @@ extension Data on ChartPainter {
 
       // Get the Y position of the bottom of the tick.
       final yPosLow = _worldToScreen(
-        _chartData.series.min,
-        _chartData.series.max,
+        _yAxisOverrideMin ?? _chartData.series.min,
+        _yAxisOverrideMax ?? _chartData.series.max,
         tick.low,
         plotAreaTop,
         (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble(),

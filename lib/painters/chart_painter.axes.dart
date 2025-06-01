@@ -53,8 +53,8 @@ extension Axes on ChartPainter {
       paint,
     );
 
-    final max = _chartData.series.max;
-    final min = _chartData.series.min;
+    final max = _yAxisOverrideMax ?? _chartData.series.max;
+    final min = _yAxisOverrideMin ?? _chartData.series.min;
     final range = max - min;
     final priceSteps = _findPriceScale(range);
     var currentPrice = (max / priceSteps).round() * priceSteps;
