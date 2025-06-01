@@ -65,8 +65,8 @@ extension Axes on ChartPainter {
 
     while (currentPrice >= min) {
       final y = _worldToScreen(
-        _chartData.series.min,
-        _chartData.series.max,
+        min,
+        max,
         currentPrice,
         axisTopY,
         axisBottomY.toDouble(),

@@ -50,8 +50,8 @@ extension Indicators on ChartPainter {
         12,
       );
     } else {
-      minValue = _chartData.series.min;
-      maxValue = _chartData.series.max;
+      minValue = _yAxisOverrideMin ?? _chartData.series.min;
+      maxValue = _yAxisOverrideMax ?? _chartData.series.max;
       plotAreaTop = _chartStyle.chartPadding.top;
       plotAreaBottom =
           (_mainChartHeight - _chartStyle.bottomLegendHeight).toDouble();
