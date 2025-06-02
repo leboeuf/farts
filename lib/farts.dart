@@ -37,6 +37,7 @@ class Fart extends StatelessWidget {
         onLongPressMoveUpdate: (details) =>
             _chartPainter!.onLongPressMoveUpdate(details),
         onLongPressUp: () => _chartPainter!.onLongPressUp(),
+        onTap: () => _chartPainter!.onTap(),
         child: CustomPaint(
           size: _size,
           painter: _chartPainter,

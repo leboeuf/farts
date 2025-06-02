@@ -3,9 +3,11 @@ part of 'chart_painter.dart';
 extension Events on ChartPainter {
   // Handles pan updates, e.g. for zooming or panning the chart.
   void onPanUpdate(DragUpdateDetails details) {
-    if (_isPerformingLongPress) {
-      // If a long-press is in progress, ignore pan updates
-      // to prevent conflicts with crosshair movement.
+    if (_crosshairPosition != null) {
+      // If crosshair is active, move it with drag.
+      // TODO: Ensure the gesture is not done on the axis labels section
+      _crosshairPosition = _getSnappedCrosshair(details.localPosition);
+      notifyListeners();
       return;
     }
 
@@ -60,6 +62,16 @@ extension Events on ChartPainter {
 
   void onLongPressUp() {
     _isPerformingLongPress = false;
+    notifyListeners();
+  }
+
+  // Handles tap to hide crosshair if active.
+  void onTap() {
+    if (_crosshairPosition != null) {
+      _isPerformingLongPress = false;
+      _crosshairPosition = null;
+      notifyListeners();
+    }
   }
 
   /// Returns the Offset snapped to the nearest tick (X axis).
