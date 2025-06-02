@@ -69,6 +69,11 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
   /// Whether the user is currently performing a long-press gesture.
   bool _isPerformingLongPress = true;
 
+  /// The position where the drag gesture started.
+  /// This is used to determine if the user is trying to pan the chart
+  /// or if they are trying to move the crosshair.
+  Offset? _dragStartPosition;
+
   @override
   void paint(Canvas canvas, Size size) {
     _stopwatch.start();

@@ -3,12 +3,27 @@ part of 'chart_painter.dart';
 extension Events on ChartPainter {
   // Handles pan updates, e.g. for zooming or panning the chart.
   void onPanUpdate(DragUpdateDetails details) {
+    // Initialize drag start position if not set.
+    _dragStartPosition ??= details.localPosition;
+
     if (_crosshairPosition != null) {
-      // If crosshair is active, move it with drag.
-      // TODO: Ensure the gesture is not done on the axis labels section
-      _crosshairPosition = _getSnappedCrosshair(details.localPosition);
-      notifyListeners();
-      return;
+      // Move the crosshair with drag, unless the gesture is performed
+      // on the axis labels areas. This is to prevent the crosshair from
+      // being moved when the user is trying to pan the chart.
+      final dx = _dragStartPosition!.dx;
+      final dy = _dragStartPosition!.dy;
+
+      final isInXAxisLabels =
+          dy >= (_mainChartHeight - _chartStyle.bottomLegendHeight);
+
+      final isInYAxisLabels =
+          dx >= (_widthAvailableForData + _chartStyle.chartPadding.left);
+
+      if (!isInXAxisLabels && !isInYAxisLabels) {
+        _crosshairPosition = _getSnappedCrosshair(details.localPosition);
+        notifyListeners();
+        return;
+      }
     }
 
     // Determine if the pan is vertical or horizontal.
@@ -45,6 +60,10 @@ extension Events on ChartPainter {
 
     // Notify listeners to repaint the chart.
     notifyListeners();
+  }
+
+  void onPanEnd(DragEndDetails details) {
+    _dragStartPosition = null;
   }
 
   // Handles long-press events to show a crosshair on the chart.
