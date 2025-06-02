@@ -3,6 +3,12 @@ part of 'chart_painter.dart';
 extension Events on ChartPainter {
   // Handles pan updates, e.g. for zooming or panning the chart.
   void onPanUpdate(DragUpdateDetails details) {
+    if (_isPerformingLongPress) {
+      // If a long-press is in progress, ignore pan updates
+      // to prevent conflicts with crosshair movement.
+      return;
+    }
+
     // Determine if the pan is vertical or horizontal.
     final isVertical = details.delta.dy.abs() > details.delta.dx.abs();
 
@@ -37,5 +43,44 @@ extension Events on ChartPainter {
 
     // Notify listeners to repaint the chart.
     notifyListeners();
+  }
+
+  // Handles long-press events to show a crosshair on the chart.
+  void onLongPressStart(LongPressStartDetails details) {
+    _isPerformingLongPress = true;
+    _crosshairPosition = _getSnappedCrosshair(details.localPosition);
+    notifyListeners();
+  }
+
+  // Handles long-press move updates to update the crosshair position.
+  void onLongPressMoveUpdate(LongPressMoveUpdateDetails details) {
+    _crosshairPosition = _getSnappedCrosshair(details.localPosition);
+    notifyListeners();
+  }
+
+  void onLongPressUp() {
+    _isPerformingLongPress = false;
+  }
+
+  /// Returns the Offset snapped to the nearest tick (X axis).
+  Offset _getSnappedCrosshair(Offset localPosition) {
+    var nearestIndex = 0;
+    var minDist = double.infinity;
+
+    for (var i = 0; i < _chartData.series.ticks.length; i++) {
+      final tickX =
+          (i * _spaceBetweenDivX + _chartStyle.chartPadding.left).toDouble();
+      final dist = (localPosition.dx - tickX).abs();
+      if (dist < minDist) {
+        minDist = dist;
+        nearestIndex = i;
+      }
+    }
+
+    final snappedX =
+        (nearestIndex * _spaceBetweenDivX + _chartStyle.chartPadding.left)
+            .toDouble();
+
+    return Offset(snappedX, localPosition.dy);
   }
 }

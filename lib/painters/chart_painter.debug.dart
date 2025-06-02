@@ -9,7 +9,7 @@ extension Debug on ChartPainter {
 
     final textSpan = TextSpan(
       text:
-          '${size.width.toStringAsFixed(0)} x ${size.height.toStringAsFixed(0)}\n${_stopwatch.elapsedMicroseconds} µs\n${(_yAxisOverrideMax?.toStringAsFixed(2) ?? "-")} x ${(_yAxisOverrideMin?.toStringAsFixed(2) ?? "-")}',
+          '${size.width.toStringAsFixed(0)} x ${size.height.toStringAsFixed(0)}\n${_stopwatch.elapsedMicroseconds} µs\n${_isPerformingLongPress}',
       style: textStyle,
     );
 

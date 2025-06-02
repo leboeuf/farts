@@ -33,6 +33,10 @@ class Fart extends StatelessWidget {
     return RepaintBoundary(
       child: GestureDetector(
         onPanUpdate: (details) => _chartPainter!.onPanUpdate(details),
+        onLongPressStart: (details) => _chartPainter!.onLongPressStart(details),
+        onLongPressMoveUpdate: (details) =>
+            _chartPainter!.onLongPressMoveUpdate(details),
+        onLongPressUp: () => _chartPainter!.onLongPressUp(),
         child: CustomPaint(
           size: _size,
           painter: _chartPainter,

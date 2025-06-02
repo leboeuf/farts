@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:farts/models/chart_data.dart';
 import 'package:farts/models/indicator.dart';
 
@@ -59,6 +61,14 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
   /// this value is set to allow manual adjustment of the visible range.
   double? _yAxisOverrideMin;
 
+  /// The position of the crosshair on the chart.
+  /// This is set when the user performs a long-press gesture
+  /// on the chart and updates as they move their finger.
+  Offset? _crosshairPosition;
+
+  /// Whether the user is currently performing a long-press gesture.
+  bool _isPerformingLongPress = true;
+
   @override
   void paint(Canvas canvas, Size size) {
     _stopwatch.start();
@@ -80,6 +90,8 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
 
     _drawData(canvas, chartArea);
     _drawIndicators(size, canvas, chartArea);
+
+    if (_crosshairPosition != null) _drawCrosshair(canvas, chartArea);
 
     _stopwatch.stop();
     if (_chartStyle.showDebugText) _drawDebugText(size, canvas);
@@ -120,5 +132,47 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
 
     final offset = Offset(x, y);
     textPainter.paint(canvas, offset);
+  }
+
+  void _drawCrosshair(Canvas canvas, Rect chartArea) {
+    final paint = Paint()
+      ..color = Colors.grey
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    // Draw dashed vertical line
+    _drawDashedLine(
+      canvas,
+      Offset(_crosshairPosition!.dx, chartArea.top),
+      Offset(_crosshairPosition!.dx, chartArea.bottom),
+      paint,
+    );
+
+    // Draw dashed horizontal line
+    _drawDashedLine(
+      canvas,
+      Offset(chartArea.left, _crosshairPosition!.dy),
+      Offset(chartArea.right, _crosshairPosition!.dy),
+      paint,
+    );
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset start, Offset end, Paint paint,
+      {double dashWidth = 5, double dashSpace = 5}) {
+    final dx = end.dx - start.dx;
+    final dy = end.dy - start.dy;
+    final distance = sqrt(dx * dx + dy * dy);
+    final dashCount = (distance / (dashWidth + dashSpace)).floor();
+    final deltaX = dx / distance;
+    final deltaY = dy / distance;
+
+    double x = start.dx, y = start.dy;
+    for (int i = 0; i < dashCount; ++i) {
+      final x2 = x + deltaX * dashWidth;
+      final y2 = y + deltaY * dashWidth;
+      canvas.drawLine(Offset(x, y), Offset(x2, y2), paint);
+      x += deltaX * (dashWidth + dashSpace);
+      y += deltaY * (dashWidth + dashSpace);
+    }
   }
 }
