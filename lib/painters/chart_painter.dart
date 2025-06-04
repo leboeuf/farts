@@ -7,6 +7,7 @@ import '../models/chart_style.dart' show ChartStyle;
 import 'package:flutter/material.dart';
 
 part 'chart_painter.axes.dart';
+part 'chart_painter.crosshair.dart';
 part 'chart_painter.data.dart';
 part 'chart_painter.debug.dart';
 part 'chart_painter.events.dart';
@@ -137,47 +138,5 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
 
     final offset = Offset(x, y);
     textPainter.paint(canvas, offset);
-  }
-
-  void _drawCrosshair(Canvas canvas, Rect chartArea) {
-    final paint = Paint()
-      ..color = Colors.grey
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-
-    // Draw dashed vertical line
-    _drawDashedLine(
-      canvas,
-      Offset(_crosshairPosition!.dx, chartArea.top),
-      Offset(_crosshairPosition!.dx, chartArea.bottom),
-      paint,
-    );
-
-    // Draw dashed horizontal line
-    _drawDashedLine(
-      canvas,
-      Offset(chartArea.left, _crosshairPosition!.dy),
-      Offset(chartArea.right, _crosshairPosition!.dy),
-      paint,
-    );
-  }
-
-  void _drawDashedLine(Canvas canvas, Offset start, Offset end, Paint paint,
-      {double dashWidth = 5, double dashSpace = 5}) {
-    final dx = end.dx - start.dx;
-    final dy = end.dy - start.dy;
-    final distance = sqrt(dx * dx + dy * dy);
-    final dashCount = (distance / (dashWidth + dashSpace)).floor();
-    final deltaX = dx / distance;
-    final deltaY = dy / distance;
-
-    double x = start.dx, y = start.dy;
-    for (int i = 0; i < dashCount; ++i) {
-      final x2 = x + deltaX * dashWidth;
-      final y2 = y + deltaY * dashWidth;
-      canvas.drawLine(Offset(x, y), Offset(x2, y2), paint);
-      x += deltaX * (dashWidth + dashSpace);
-      y += deltaY * (dashWidth + dashSpace);
-    }
   }
 }

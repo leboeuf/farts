@@ -23,6 +23,9 @@ class ChartColors {
   /// The color to use for the border of indicators below the chart.
   final Color indicatorBorderColor;
 
+  /// The color of the crosshair lines.
+  final Color crosshairColor;
+
   ChartColors({
     this.backgroundColor = const [
       Color.fromRGBO(15, 23, 42, 1),
@@ -34,6 +37,7 @@ class ChartColors {
     this.axisColor = const Color(0xff5e5e5e),
     this.axisLabelsColor = const Color(0xffcecece),
     this.indicatorBorderColor = const Color(0xff5e5e5e),
+    this.crosshairColor = const Color(0xff5e5e5e),
   });
 }
 
