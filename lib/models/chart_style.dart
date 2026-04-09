@@ -103,7 +103,7 @@ class ChartStyle {
     this.showXAxis = true,
     this.showYAxis = true,
     this.showDebugText = true,
-    this.showCandlesticks = true,
+    this.showCandlesticks = false,
     this.candlestickBodyWidthRatio = 0.8,
     this.rightLegendWidth = 50,
     this.bottomLegendHeight = 8,

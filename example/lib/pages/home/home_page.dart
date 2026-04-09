@@ -1,4 +1,5 @@
 import 'package:example/pages/home/home_page_item.dart';
+import 'package:example/pages/candlestick_chart/candlestick_chart_page.dart';
 import 'package:example/pages/simple_chart/simple_chart_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,15 +13,20 @@ class HomePage extends StatelessWidget {
         children: [
           HomePageItem(
             title: 'Simple chart',
-            description:
-                'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
+            description: 'A simple chart with default parameters.',
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const SimpleChartPage()),
             ),
           ),
-          const HomePageItem(
-            title: 'title',
-            description: 'description',
+          HomePageItem(
+            title: 'Candlestick chart',
+            description:
+                'Displays OHLC candles with bullish and bearish body colors.',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CandlestickChartPage(),
+              ),
+            ),
           ),
         ],
       ),
