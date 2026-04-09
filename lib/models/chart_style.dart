@@ -55,6 +55,16 @@ class ChartStyle {
   /// Whether to display debug text.
   final bool showDebugText;
 
+  /// Whether to draw each tick as a candlestick.
+  ///
+  /// When false, data is rendered as simple high-low lines.
+  final bool showCandlesticks;
+
+  /// The body width of each candlestick, as a ratio of the space between ticks.
+  ///
+  /// For example 0.7 means each body uses 70% of its horizontal slot.
+  final double candlestickBodyWidthRatio;
+
   /// The width of the right legend (the price labels area).
   final int rightLegendWidth;
 
@@ -93,6 +103,8 @@ class ChartStyle {
     this.showXAxis = true,
     this.showYAxis = true,
     this.showDebugText = true,
+    this.showCandlesticks = true,
+    this.candlestickBodyWidthRatio = 0.8,
     this.rightLegendWidth = 50,
     this.bottomLegendHeight = 8,
     this.axisThickness = 2,

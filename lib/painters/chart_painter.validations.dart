@@ -15,6 +15,12 @@ extension Validations on ChartPainter {
       return false;
     }
 
+    if (_chartStyle.candlestickBodyWidthRatio <= 0 ||
+        _chartStyle.candlestickBodyWidthRatio > 1) {
+      _drawError(size, canvas, 'Invalid candlestick body width ratio.');
+      return false;
+    }
+
     return true;
   }
 
