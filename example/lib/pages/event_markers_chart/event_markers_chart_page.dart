@@ -1,0 +1,39 @@
+import 'package:example/fake_event_markers_data.dart';
+import 'package:example/fake_indicators_data.dart';
+import 'package:example/fake_tick_data.dart';
+import 'package:farts/farts.dart';
+import 'package:farts/models/chart_data.dart';
+import 'package:farts/models/chart_style.dart';
+import 'package:farts/models/tick_collection.dart';
+import 'package:flutter/material.dart';
+
+class EventMarkersChartPage extends StatelessWidget {
+  const EventMarkersChartPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Event markers chart'),
+      ),
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) => Fart(
+            constraints.biggest,
+            chartStyle: ChartStyle(
+              showCandlesticks: true,
+              candlestickBodyWidthRatio: 0.8,
+            ),
+            chartData: ChartData(
+              series: TickCollection(
+                kFakeTickData,
+                indicators: kFakeIndicatorsData,
+              ),
+              eventMarkers: kFakeEventMarkersData,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

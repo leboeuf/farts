@@ -11,6 +11,7 @@ part 'chart_painter.crosshair.dart';
 part 'chart_painter.data.dart';
 part 'chart_painter.debug.dart';
 part 'chart_painter.events.dart';
+part 'chart_painter.markers.dart';
 part 'chart_painter.indicators.dart';
 part 'chart_painter.perf.dart';
 part 'chart_painter.validations.dart';
@@ -96,8 +97,11 @@ class ChartPainter extends CustomPainter with ChangeNotifier {
 
     _drawData(canvas, chartArea);
     _drawIndicators(size, canvas, chartArea);
+    _drawEventMarkers(canvas);
 
-    if (_crosshairPosition != null) _drawCrosshair(canvas, chartArea);
+    if (_crosshairPosition != null && _isPerformingLongPress) {
+      _drawCrosshair(canvas, chartArea);
+    }
 
     _stopwatch.stop();
     if (_chartStyle.showDebugText) _drawDebugText(size, canvas);

@@ -1,5 +1,6 @@
 import 'package:example/pages/home/home_page_item.dart';
 import 'package:example/pages/candlestick_chart/candlestick_chart_page.dart';
+import 'package:example/pages/event_markers_chart/event_markers_chart_page.dart';
 import 'package:example/pages/simple_chart/simple_chart_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,16 @@ class HomePage extends StatelessWidget {
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => const CandlestickChartPage(),
+              ),
+            ),
+          ),
+          HomePageItem(
+            title: 'Event markers chart',
+            description:
+                'Displays custom event markers at specific dates and prices.',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const EventMarkersChartPage(),
               ),
             ),
           ),
